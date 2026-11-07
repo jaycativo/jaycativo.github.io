@@ -91,7 +91,7 @@ h3 { font-size: 16px; }
 
 /* about */
 .about-top { display: flex; gap: 24px; flex-wrap: wrap; align-items: center; margin-bottom: 8px; }
-.ascii { margin: 0; font: 14px/1.25 var(--mono); color: var(--ink); }
+.avatar { display: block; width: 128px; height: 128px; border: 1.5px solid var(--rule); image-rendering: pixelated; }
 .tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
 .tag { border: 1.5px solid var(--rule); color: var(--on); font-size: 12px; padding: 0 8px; line-height: 1.6; }
 .t0 { background: var(--a); } .t1 { background: var(--b); } .t2 { background: var(--c); }

@@ -41,7 +41,7 @@ node --test markdown.test.mjs  # tests
 - `lib/markdown.mjs`: the markdown renderer. `lib/pixels.mjs`: the avatar and
   favicon pixel grid.
 - `site/`: files copied as they are: `style.css` (colour tokens at the top),
-  `bird.js` (the pet), `site.js` (light or dark paper), `ascii.txt` (about face).
+  `bird.js` (the pet), `site.js` (light or dark paper).
 - `posts/`, `about.md`, `data/projects.json`: content.
 - `.github/workflows/pages.yml`: tests, builds, and deploys on push, and daily.
 

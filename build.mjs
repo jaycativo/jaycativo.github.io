@@ -2,7 +2,7 @@
 //   node build.mjs           build once
 //   node build.mjs --serve   build, then preview at http://127.0.0.1:4000
 
-import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, cpSync, existsSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, readdirSync, rmSync, cpSync, existsSync, watch } from 'node:fs';
 import { join, dirname, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import http from 'node:http';
@@ -154,14 +154,13 @@ ${p.html}
 
 function aboutPage() {
   const { data, body } = parseFrontMatter(readFileSync(join(ROOT, 'about.md'), 'utf8'));
-  const ascii = readFileSync(join(ROOT, 'site', 'ascii.txt'), 'utf8').replace(/\s+$/, '');
   const likes = (data.likes || '').split(',').map((s) => s.trim()).filter(Boolean);
   return layout({
     title: 'about',
     current: 'about',
     description: data.summary || 'About Jay.',
     body: `<div class="about-top">
-<pre class="ascii" aria-hidden="true">${esc(ascii)}</pre>
+<img class="avatar" src="/avatar.svg" width="128" height="128" alt="Pixel art of Jay in a sage beanie and an orange sweater">
 <div><h1>${esc(data.title || 'hi, I’m Jay')}</h1><div class="soft">${esc(data.subtitle || '')}</div>
 <div class="tags">${likes.map((t, i) => `<span class="tag t${i % 3}">${esc(t)}</span>`).join('')}</div></div>
 </div>
@@ -206,14 +205,17 @@ function write(path, content) {
   writeFileSync(full, content);
 }
 
+let projectsCache; // GitHub is asked once per run, not on every rebuild in preview
+
 async function build() {
   rmSync(OUT, { recursive: true, force: true });
   mkdirSync(OUT, { recursive: true });
-  cpSync(join(ROOT, 'site'), OUT, { recursive: true, filter: (src) => !src.endsWith('ascii.txt') });
+  cpSync(join(ROOT, 'site'), OUT, { recursive: true });
   write('favicon.svg', avatarSvg());
+  write('avatar.svg', avatarSvg());
 
   const posts = loadPosts();
-  const projects = await loadProjects();
+  const projects = (projectsCache ??= await loadProjects());
   write('index.html', homePage(posts));
   for (const p of posts) write(`posts/${p.slug}/index.html`, postPage(p));
   write('about/index.html', aboutPage());
@@ -230,15 +232,32 @@ function serve() {
       let path = decodeURIComponent(new URL(req.url, 'http://x').pathname);
       if (path.endsWith('/')) path += 'index.html';
       const file = join(OUT, path);
-      if (!file.startsWith(OUT) || !existsSync(file)) {
-        res.writeHead(404, { 'content-type': TYPES['.html'] });
-        res.end(readFileSync(join(OUT, '404.html')));
-        return;
+      try {
+        if (!file.startsWith(OUT) || !existsSync(file)) {
+          res.writeHead(404, { 'content-type': TYPES['.html'] });
+          res.end(readFileSync(join(OUT, '404.html')));
+          return;
+        }
+        res.writeHead(200, { 'content-type': TYPES[extname(file)] || 'application/octet-stream' });
+        res.end(readFileSync(file));
+      } catch {
+        // dist/ is being rebuilt; ask for a refresh instead of crashing
+        res.writeHead(503, { 'content-type': TYPES['.html'], 'retry-after': '1' });
+        res.end('rebuilding, refresh in a second');
       }
-      res.writeHead(200, { 'content-type': TYPES[extname(file)] || 'application/octet-stream' });
-      res.end(readFileSync(file));
     })
     .listen(4000, '127.0.0.1', () => console.log('preview at http://127.0.0.1:4000'));
+
+  // Rebuild when content or site files change. (Edits to build.mjs or lib/ need a restart.)
+  let timer;
+  const rebuild = () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => build().catch((err) => console.warn(`! ${err.message}`)), 150);
+  };
+  for (const dir of ['posts', 'site', 'data']) {
+    if (existsSync(join(ROOT, dir))) watch(join(ROOT, dir), { recursive: true }, rebuild);
+  }
+  watch(join(ROOT, 'about.md'), rebuild);
 }
 
 await build();
