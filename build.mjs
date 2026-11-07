@@ -162,7 +162,7 @@ function aboutPage() {
     body: `<div class="about-top">
 <img class="avatar" src="/avatar.svg" width="128" height="128" alt="Pixel art of Jay in a sage beanie and an orange sweater">
 <div><h1>${esc(data.title || 'hi, I’m Jay')}</h1><div class="soft">${esc(data.subtitle || '')}</div>
-<div class="tags">${likes.map((t, i) => `<span class="tag t${i % 3}">${esc(t)}</span>`).join('')}</div></div>
+${likes.length ? `<div class="likes-label">things i like</div>\n<div class="tags">${likes.map((t, i) => `<span class="tag t${i % 3}">${esc(t)}</span>`).join('')}</div>` : ''}</div>
 </div>
 <div class="prose">
 ${render(body)}
