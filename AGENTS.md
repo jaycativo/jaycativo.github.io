@@ -45,6 +45,17 @@ node --test markdown.test.mjs  # tests
 - `posts/`, `about.md`, `data/projects.json`: content.
 - `.github/workflows/pages.yml`: tests, builds, and deploys on push, and daily.
 
+## Skills
+
+Task-specific know-how lives in `.agents/skills/<name>/SKILL.md`, in the open Agent Skills format (a
+short front matter, then plain Markdown). Read the one that matches your task before you start.
+Tools that read a different skills folder can point it at `.agents/skills`. Claude Code finds them
+through the `.claude/skills` link.
+
+| Skill | Read it when you are |
+| --- | --- |
+| `code-standards` | writing or changing any JavaScript, CSS, or page template, and before every commit |
+
 ## Design
 
 - Paper and ink: warm grey paper, soft charcoal ink, so contrast stays gentle.
@@ -64,6 +75,7 @@ node --test markdown.test.mjs  # tests
 
 ## Working agreements
 
+- Follow the `code-standards` skill. Its "known debt" list says what to tidy when you touch a file.
 - Small steps. Tests stay green, and `node build.mjs` runs clean before a commit.
 - Commit each working step with a message that says what changed and why.
 - Commit with the owner's GitHub noreply address
