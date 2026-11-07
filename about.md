@@ -10,7 +10,6 @@ I like building small, useful, slightly weird things, and writing down what I le
 ## now
 
 - building this site, and a kanban board for my notes
-- reading: (edit me)
 
 ## find me
 
