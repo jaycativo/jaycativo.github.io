@@ -57,14 +57,37 @@
     setTimeout(function () { show('K', true); }, 150);
   }
 
-  function chirp() {
-    say.textContent = SAYS[Math.floor(Math.random() * SAYS.length)];
+  function chirp(text) {
+    say.textContent = text || SAYS[Math.floor(Math.random() * SAYS.length)];
     say.style.opacity = 1;
     clearTimeout(sayTimer);
     sayTimer = setTimeout(function () { say.style.opacity = 0; }, 1600);
   }
 
   show('K', true);
+
+  // The nest: a footer button hides the bird, and the choice is remembered in this browser.
+  var nest = document.getElementById('nest');
+  var root = document.documentElement;
+  var leaving = false;
+  function nested() { return root.dataset.nest === '1'; }
+  function nestLabel() { if (nest) nest.textContent = nested() ? 'call the bird back' : 'send the bird to the nest'; }
+  function setNest(on) {
+    if (on) root.dataset.nest = '1'; else delete root.dataset.nest;
+    try { if (on) localStorage.setItem('nest', '1'); else localStorage.removeItem('nest'); } catch (e) {}
+    nestLabel();
+  }
+  if (nest) {
+    nest.hidden = false;
+    nestLabel();
+    nest.addEventListener('click', function () {
+      if (leaving) return;
+      if (nested()) { setNest(false); chirp('hi.'); return; }
+      leaving = true;
+      chirp('off to the nest.');
+      setTimeout(function () { setNest(true); leaving = false; }, 1100);
+    });
+  }
 
   bird.addEventListener('click', function () { chirp(); hopTo(x); });
 
@@ -74,6 +97,7 @@
   });
 
   setInterval(function () {
+    if (nested()) return;
     var r = Math.random();
     if (!calm && !reduced && r < 0.5) {
       var max = Math.max(24, window.innerWidth - 100);

@@ -56,7 +56,11 @@ node --test markdown.test.mjs  # tests
 - Voice: lowercase and casual for the site's own words, sentence case for
   headings in the docs. No "please" or "successfully".
 - The bird: stays calm (no random hops) on post pages, and never hops for people
-  who prefer reduced motion.
+  who prefer reduced motion. A footer button sends it to the nest (hidden, and
+  remembered in localStorage under `nest`); the choice is applied before first
+  paint by the inline script in the page head.
+- The header cursor is a still block. It blinked once and Jay found it
+  distracting, so do not animate it.
 
 ## Working agreements
 

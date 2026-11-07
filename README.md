@@ -31,7 +31,7 @@ Supported markdown: headings, paragraphs, bold, italic, links, images, code bloc
 
 Tag the repo on GitHub with the topic `showcase`. The projects page lists every public, non-fork repo of yours with that topic, using its description. It refreshes on every push and once a day.
 
-For something that is not a GitHub repo, add an entry to `data/projects.json`:
+`data/projects.json` is for anything that is not tagged (or not on GitHub). It already lists `task-board-app`, and if you tag that repo later too, it still shows up only once. An entry looks like this:
 
 ```json
 [{ "name": "my thing", "url": "https://example.com", "description": "what it is", "tags": ["art"] }]
@@ -42,7 +42,7 @@ For something that is not a GitHub repo, add an entry to `data/projects.json`:
 - About page: `about.md`
 - Tagline on the home page: the top of `build.mjs`
 - Colours and type: the top of `site/style.css`
-- The bird: `site/bird.js`
+- The bird: `site/bird.js`. Visitors can send it to the nest with the link in the footer; the choice is remembered in their browser.
 - The favicon: the pixel grid in `lib/pixels.mjs`
 
 ## Run it on your computer

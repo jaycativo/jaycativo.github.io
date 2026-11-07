@@ -101,7 +101,7 @@ function layout({ title, description, body, current = '', calm = false }) {
 <meta name="description" content="${esc(description)}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="/style.css">
-<script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{var d=document.documentElement,t=localStorage.getItem('theme');if(t)d.dataset.theme=t;if(localStorage.getItem('nest')==='1')d.dataset.nest='1'}catch(e){}</script>
 </head>
 <body${calm ? ' class="calm"' : ''}>
 <div class="wrap">
@@ -115,7 +115,7 @@ function layout({ title, description, body, current = '', calm = false }) {
 <main>
 ${body}
 </main>
-<footer class="foot">written by hand · hosted on github pages · a small bird lives at the bottom of the page</footer>
+<footer class="foot">written by hand · hosted on github pages · <button class="linklike" id="nest" type="button" hidden>send the bird to the nest</button></footer>
 </div>
 <script src="/site.js" defer></script>
 <script src="/bird.js" defer></script>

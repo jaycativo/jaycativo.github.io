@@ -1,1 +1,8 @@
-[]
+[
+  {
+    "name": "task-board-app",
+    "url": "https://github.com/jaycativo/task-board-app",
+    "description": "A local kanban board over one Obsidian TODO.md. The file stays the source of truth; the board is just a view.",
+    "tags": ["JavaScript", "local-first"]
+  }
+]

@@ -109,6 +109,9 @@ h3 { font-size: 16px; }
 
 /* footer and the pet */
 .foot { margin-top: 56px; padding-top: 10px; border-top: 1px dashed var(--rule); color: var(--soft); font-size: 13px; }
+.linklike { font: inherit; color: var(--soft); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline dashed; text-underline-offset: 3px; }
+.linklike:hover { background: var(--a); color: var(--on); }
+:root[data-nest="1"] #perch { display: none; }
 #perch { position: fixed; left: 0; right: 0; bottom: 0; height: 84px; pointer-events: none; z-index: 5; }
 #perch::after { content: ""; position: absolute; left: 0; right: 0; bottom: 14px; border-top: 1.5px dashed var(--rule); opacity: 0.35; }
 #bird { position: absolute; bottom: 14px; left: 24px; pointer-events: auto; cursor: pointer; transition: left 0.5s linear; line-height: 0; }
