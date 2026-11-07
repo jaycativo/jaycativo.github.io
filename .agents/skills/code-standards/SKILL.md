@@ -27,7 +27,8 @@ read in a year. They sit on top of the ground rules in `AGENTS.md`.
 ### Names and values
 
 6. **Modern JavaScript everywhere.** `const` and `let`, never `var`. Template strings for HTML. Browser
-   scripts are plain JS in one wrapper function so nothing leaks into the page.
+   scripts in `site/` are ES modules (`<script type="module">`), so nothing leaks into the page, and
+   each one imports what it needs.
 7. **Names say what a thing is.** Verbs for functions (`loadPosts`, `renderPostPage`), nouns for data.
    No one-letter names except `i`, `e`, and short loop variables.
 8. **No magic values.** A number or string that carries meaning (a time, a size, a storage key, a
@@ -72,7 +73,8 @@ read in a year. They sit on top of the ground rules in `AGENTS.md`.
 - No `var`, no unused code, no new magic numbers, no raw hex in CSS?
 - Is every value in HTML escaped?
 - Is there a test for the behaviour I changed?
-- `node --test markdown.test.mjs` and `node build.mjs` both run clean?
+- `node --test *.test.mjs` and `node build.mjs` both run clean?
+- Did I look at the page in a browser, if I changed anything it shows or does?
 - Did I read my own diff once, as if someone else wrote it?
 
 ## Tidying old code
@@ -82,15 +84,16 @@ separate commits: a "tidy" commit changes no behaviour, and the tests pass befor
 
 ## Known debt (fix it when you touch the file)
 
-- `build.mjs` is about 260 lines and does five jobs: loading posts, fetching projects, HTML
-  templates, the build, and the preview server. Split into `lib/posts.mjs`, `lib/projects.mjs`,
-  `lib/templates.mjs`, and `lib/serve.mjs`.
-- `SITE_URL` in `build.mjs` is unused.
-- `aboutPage` and `projectsPage` build lists inside template strings, one of them a nested template
-  on a 150-character line.
-- `site/bird.js` is ES5 with `var`. Sprite data, the nest, and the bird's behaviour share one
-  110-line function. The timings (520, 150, 1100, 1600, 2400) and distances (160, 200, 100) are magic
-  numbers, and its hex colours repeat the ones in the CSS and `lib/pixels.mjs`.
-- The storage keys `'theme'` and `'nest'` are written out in the layout's head script, `site.js`, and
-  `bird.js`.
-- Nothing tests the page templates. A small test that builds into a temp folder would.
+The first big tidy (splitting `build.mjs` and the bird into small modules) is done. What is left:
+
+- The scripts in `site/` have no automated tests. They are checked by hand in a browser: the bird,
+  the nest button, and the paper toggle. A small browser test would close this.
+- `lib/pixels.mjs` repeats the sage, blue, and orange from the tokens in `site/style.css`, and
+  `site/sprite.js` has two colours (the wing and the belly) that are not tokens. Both are artwork, and
+  both have a comment saying so. If the palette changes, change all three places.
+- The storage keys `'theme'` and `'nest'` appear in the inline head script and in the module that
+  owns each one. That cannot be shared between a build script and a page, so each place has a comment
+  pointing at the others.
+- The markdown renderer handles lists one level deep, with no syntax colouring in code blocks.
+
+Add to this list when you spot something you cannot fix in the same change.

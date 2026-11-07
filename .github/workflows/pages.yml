@@ -24,7 +24,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: node --test markdown.test.mjs
+      - run: node --test *.test.mjs
       - run: node build.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

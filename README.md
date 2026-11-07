@@ -40,16 +40,16 @@ Tag the repo on GitHub with the topic `showcase`. The projects page lists every 
 ## Edit the pages
 
 - About page: `about.md`
-- Tagline on the home page: the top of `build.mjs`
+- Tagline on the home page: the top of `lib/templates.mjs`. Footer wording: the top of `lib/layout.mjs`
 - Colours and type: the top of `site/style.css`
-- The bird: `site/bird.js`. Visitors can send it to the nest with the link in the footer; the choice is remembered in their browser.
+- The bird: `site/bird.js` (what it does) and `site/sprite.js` (how it looks). Visitors can send it to the nest with the link in the footer; the choice is remembered in their browser.
 - The favicon: the pixel grid in `lib/pixels.mjs`
 
 ## Run it on your computer
 
 ```sh
 node build.mjs --serve   # then open http://127.0.0.1:4000
-node --test markdown.test.mjs
+node --test *.test.mjs
 ```
 
 ## Put it online (once)

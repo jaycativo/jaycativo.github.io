@@ -31,17 +31,22 @@ terminal, a bit e-ink, and low stakes to write in.
 ```sh
 node build.mjs --serve         # build, then preview at http://127.0.0.1:4000
 node build.mjs                 # build only
-node --test markdown.test.mjs  # tests
+node --test *.test.mjs         # all tests
 ```
 
 ## Layout
 
-- `build.mjs`: reads content, fetches projects, writes pages into `dist/`.
-  Page templates are functions in this file.
-- `lib/markdown.mjs`: the markdown renderer. `lib/pixels.mjs`: the avatar and
-  favicon pixel grid.
-- `site/`: files copied as they are: `style.css` (colour tokens at the top),
-  `bird.js` (the pet), `site.js` (light or dark paper).
+- `build.mjs`: the entry point. It runs the steps in order and holds no logic.
+- `lib/`: the work, one job per file.
+  - `build.mjs` writes the whole site. `posts.mjs`, `about.mjs`, and `projects.mjs` read content.
+  - `layout.mjs`: the frame around every page (head, nav, footer, scripts).
+    `templates.mjs`: each page as a function from data to HTML. The home page tagline lives here.
+  - `markdown.mjs`: the markdown renderer. `pixels.mjs`: the avatar and favicon pixel grid.
+  - `serve.mjs`: the local preview. `config.mjs`: settings several files share.
+- `site/`: files copied as they are. `style.css` has the colour tokens at the top. The bird is three
+  small modules: `bird.js` (behaviour), `sprite.js` (pixels), `nest.js` (the footer button).
+  `site.js` is the light or dark paper button.
+- `*.test.mjs`: tests for `lib/`, one file per area.
 - `posts/`, `about.md`, `data/projects.json`: content.
 - `.github/workflows/pages.yml`: tests, builds, and deploys on push, and daily.
 
