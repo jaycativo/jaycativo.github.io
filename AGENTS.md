@@ -62,8 +62,9 @@ node --test markdown.test.mjs  # tests
 
 - Small steps. Tests stay green, and `node build.mjs` runs clean before a commit.
 - Commit each working step with a message that says what changed and why.
-- Commit as the owner's private relay address. This repo's local git config sets
-  it; do not change it, and never use the owner's real email.
+- Commit with the owner's GitHub noreply address
+  (`138532952+jaycativo@users.noreply.github.com`). This repo's local git config
+  sets it; do not change it, and never use the owner's real email.
 - Push only once a remote exists and the owner has asked for pushes (they have,
   for this repo). Do not force-push.
 - Update `README.md` in the same change as any behaviour users can see.
