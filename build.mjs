@@ -115,7 +115,7 @@ function layout({ title, description, body, current = '', calm = false }) {
 <main>
 ${body}
 </main>
-<footer class="foot">written by hand · hosted on github pages · <button class="linklike" id="nest" type="button" hidden>send the bird to the nest</button></footer>
+<footer class="foot">written with care · hosted on github pages · <button class="linklike" id="nest" type="button" hidden>send the bird to the nest</button></footer>
 </div>
 <script src="/site.js" defer></script>
 <script src="/bird.js" defer></script>
